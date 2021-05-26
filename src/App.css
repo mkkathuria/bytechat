@@ -1,5 +1,5 @@
-.border {
-  border: 2px solid red;
+.borderbb {
+  border: 2px solid black;
 }
 .app {
   display: flex;
@@ -12,8 +12,8 @@
   display: flex;
   background-color: #f7e4e4fb;
   margin: auto;
-  height: 92vh;
-  width: 92vw;
+  height: 95vh;
+  width: 95vw;
   box-shadow: -1px 4px 20px -6px rgba(0, 0, 0, 0.75);
 }
 .temp {

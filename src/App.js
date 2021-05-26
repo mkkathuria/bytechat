@@ -4,7 +4,7 @@ import Sidebar from "./components/Sidebar";
 
 function App() {
   return (
-    <div className="app border">
+    <div className="app borderbb">
       <div className="app_body border">
         <Sidebar></Sidebar>
         <Chat> </Chat>

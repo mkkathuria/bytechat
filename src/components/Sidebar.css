@@ -4,5 +4,62 @@
 .sidebar{
     display: flex;
     flex-direction: column;
-    flex: .32;
+    flex: .32;/* screen ka 32% area use kre*/
+}
+.sidebar_header{
+    display: flex;
+    justify-content: space-between;/* ek div left corner main rahe aur dusra div right corner main rahe*/
+    padding:20px ;
+    border-right: 1px solid  gray;
+
+}
+.sidebar_headerRight{
+    display: flex;
+    justify-content: space-between;
+    min-width: 10vw;
+   align-items: center;/* items vertically align krne ke liye note that these types of properties only applicable on display grid or flex*/
+
+}
+/* Directe childs of .sidebar_headerRight having class .Mui...  */
+.sidebar_headerRight > .MuiSvgIcon-root{
+    margin-right:  2vw;
+    font-size: 22px !important;
+}
+
+.sidebar_search{
+    display: flex;
+    align-items: center;
+    background-color: #f6f6f6;
+    height: 40px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.sidebar_searchContainer{
+    display: flex;
+    align-items: center;
+    background-color: white;
+    width: 100%;
+    height: 30px;
+    border-radius: 20px;
+
+}
+
+
+
+.sidebar_searchContainer > .MuiSvgIcon-root{
+    color: gray;
+    padding: 3px;
+}
+.sidebar_searchContainer > input{
+    border: none;/* input field ka border hatane ke liye*/
+    outline-width: 0;/* jab click ho to bhi border na aaye*/
+    margin-left: 10px;
+}
+
+.sidebar_chats{
+   flex: 1;
+   overflow: scroll;
+
 }

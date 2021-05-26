@@ -6,3 +6,16 @@
   flex-direction: column;
   flex: 0.68;
 }
+.chat_header{
+  display: flex;
+  padding: 20px;
+  align-items: center;
+  border-bottom: 1px solid gray;
+}
+.chat_headerInfo{
+  flex: 1;
+  padding-left: 20px;
+}
+.chat_headerRight{
+  /* flex:1; */
+}
