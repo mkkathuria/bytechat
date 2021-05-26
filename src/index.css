@@ -1,3 +1,8 @@
+*{
+  margin: 0;
+  /* ye isliye kiya kyunki upar we thodi si space bachti hain usko hatane ki liye */
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

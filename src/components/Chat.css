@@ -1,0 +1,8 @@
+.border {
+  border: 2px solid red;
+}
+.chat {
+  display: flex;
+  flex-direction: column;
+  flex: 0.68;
+}
