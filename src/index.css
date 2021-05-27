@@ -3,6 +3,9 @@
   box-sizing: border-box;
   /* ye isliye kiya kyunki upar we thodi si space bachti hain usko hatane ki liye */
 }
+.border{
+  border: 2px solid red;
+}
  
 body {
   margin: 0;

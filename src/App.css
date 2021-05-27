@@ -1,6 +1,4 @@
-.borderbb {
-  border: 2px solid black;
-}
+
 .app {
   display: flex;
   place-items: center;
@@ -10,7 +8,7 @@
 
 .app_body {
   display: flex;
-  background-color: #f7e4e4fb;
+  background-color: #fffcfc86;
   margin: auto;
   height: 95vh;
   width: 95vw;

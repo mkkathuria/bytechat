@@ -1,6 +1,4 @@
-.border{
-    border: 2px solid red;
-}
+
 .sidebar{
     display: flex;
     flex-direction: column;
@@ -56,6 +54,7 @@
     border: none;/* input field ka border hatane ke liye*/
     outline-width: 0;/* jab click ho to bhi border na aaye*/
     margin-left: 10px;
+    width: 100%;
 }
 
 .sidebar_chats{
