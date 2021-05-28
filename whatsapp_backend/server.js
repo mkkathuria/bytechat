@@ -20,6 +20,13 @@ const pusher = new Pusher({
 // middlewares
 app.use(express.json());
 
+app.use((req,res,next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "*");
+  next();
+})
+// iski jagah app.use(core()) bhi kr skte hai cors ko install krke npm i cors
+
 // DB config
 const connection_url =
   "mongodb+srv://mukul:qOtxfGR96akkHqrF@cluster0.lmn61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
@@ -37,7 +44,20 @@ db.once("open", () => {
   const changeStream = msgCollection.watch();
 
   changeStream.on("change", (change) => {
-    console.log("a change",change);
+    console.log("a change", change);
+
+    if(change.operationType === "insert"){
+      const messageDetails = change.fullDocument;
+      pusher.trigger("messages","inserted",{
+        name: messageDetails.name,
+        message: messageDetails.message,
+        timeStamp : messageDetails.timeStamp,
+        received: messageDetails.received,
+         
+      });
+    } else {
+      console.log("Error triggering Pusher");
+    }
   });
 });
 
