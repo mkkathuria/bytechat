@@ -40,7 +40,7 @@ const db = mongoose.connection;
 
 db.once("open", () => {
   console.log("My Database Connected");
-  const msgCollection = db.collection("mychatmessages");
+  const msgCollection = db.collection("room");
   const changeStream = msgCollection.watch();
 
   changeStream.on("change", (change) => {
@@ -49,10 +49,11 @@ db.once("open", () => {
     if(change.operationType === "insert"){
       const messageDetails = change.fullDocument;
       pusher.trigger("messages","inserted",{
-        name: messageDetails.name,
-        message: messageDetails.message,
-        timeStamp : messageDetails.timeStamp,
-        received: messageDetails.received,
+        room : messageDetails.room_name,
+        name: messageDetails.messages.name,
+        message: messageDetails.messages.message,
+        timeStamp : messageDetails.messages.timeStamp,
+        received: messageDetails.messages.received,
          
       });
     } else {

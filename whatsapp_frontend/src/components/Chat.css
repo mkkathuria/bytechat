@@ -9,6 +9,7 @@
   padding: 20px;
   align-items: center;
   border-bottom: 1px solid gray;
+  min-width: 500px;
 }
 .chat_headerInfo {
   flex: 1;

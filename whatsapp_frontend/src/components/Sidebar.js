@@ -11,6 +11,16 @@ import SidebarChat from "./SidebarChat";
 
 /* ye wale icons hain jaise donutlargeicon */
 function Sidebar() {
+ 
+   const createchat= ()=>{
+     const friendname = prompt("Please Enter Your New Friend's Name");
+
+     if(friendname){
+       ///
+     }
+   }
+
+
   return (
     <div className="sidebar border">
       <div className="sidebar_header">
@@ -33,9 +43,15 @@ function Sidebar() {
           <input  type="text" placeholder="Search or start new chat"></input>
         </div>
       </div>
+      <div className="add_new_chat" onClick={createchat}>
+        <h2 >Add New Chat</h2>
+      </div>
       <div className="sidebar_chats border">
         <SidebarChat/>
         <SidebarChat/>
+        <SidebarChat/>
+        <SidebarChat/>
+
 
 
       </div>

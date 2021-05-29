@@ -1,5 +1,5 @@
 import { Avatar, IconButton, Input } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Chat.css";
 import SearchIcon from "@material-ui/icons/Search";
 import AttachFileIcon from "@material-ui/icons/AttachFile";
@@ -26,10 +26,18 @@ function Chat(props) {
     setInput("");
   };
 
+  const [seed, setSeed] = useState("");
+
+  useEffect(() => {
+    setSeed(Math.floor(Math.random() * 1000000));
+  },[]);
+  // // setSeed(Math.floor(Math.random()*1000000));
+
+
   return (
     <div className="chat border">
       <div className="chat_header border">
-        <Avatar />
+        <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
         <div className="chat_headerInfo border">
           <h3>Friend's Name</h3>
           <p>Last Seen</p>

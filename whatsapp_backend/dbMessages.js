@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
 
-const mychatappSchema = mongoose.Schema({
-  message: String,
-  name: String,
-  timestamp: String,
-  received: Boolean
+const roomwithmsg = mongoose.Schema({
+  room_name : String,
+  messages : [{message: String,
+    name: String,
+    timestamp: String,
+    received: Boolean}] 
 });
 
-export default mongoose.model('mychatmessage',mychatappSchema);
+export default mongoose.model('room',roomwithmsg);
