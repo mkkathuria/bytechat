@@ -7,12 +7,16 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
 import MicIcon from "@material-ui/icons/Mic";
 import Axios from "../axios";
+import { useParams } from "react-router";
+import Pusher from "pusher-js";
 
+function Chat() {
+  
 
-function Chat(props) {
-  const msges = props.msges;
   const [input, setInput] = useState("");
-
+  const { room_id } = useParams();
+  //console.log(room_id,"     room id");
+  const [allmessages, setAllmessages] = useState([]);
   const sendmsg = async (e) => {
     e.preventDefault();
 
@@ -21,6 +25,7 @@ function Chat(props) {
       message: input,
       timestamp: "dflskjl",
       received: false,
+      room_id: room_id,
     });
 
     setInput("");
@@ -30,10 +35,33 @@ function Chat(props) {
 
   useEffect(() => {
     setSeed(Math.floor(Math.random() * 1000000));
-  },[]);
+  }, []);
   // // setSeed(Math.floor(Math.random()*1000000));
+  useEffect(() => {
+    (async () => {
+      const msgeeees = await Axios.get(`/api/messages/room/${room_id}`);
+      setAllmessages(msgeeees.data);
+    })();
+  }, [room_id]);
 
+  useEffect(() => {
+    const pusher = new Pusher("7e1c9fc88e785ac03390", {
+      cluster: "ap2",
+    });
 
+    const channel = pusher.subscribe("messages");
+    channel.bind("updated",  async (newMessage) => {
+       alert(JSON.stringify(newMessage));
+       const msgeeees = await Axios.get(`/api/messages/room/${room_id}`);
+       setAllmessages(msgeeees.data);
+    });
+
+    return () => {
+      channel.unbind_all();
+      channel.unsubscribe();
+    };
+  }, [allmessages,room_id]);
+  console.log(allmessages, " this is all msges");
   return (
     <div className="chat border">
       <div className="chat_header border">
@@ -56,7 +84,7 @@ function Chat(props) {
       </div>
 
       <div className="chat_body">
-        {msges.map((msg) => (
+        {allmessages.map((msg) => (
           <p className={`chat_message ${!msg.received && "chat_send"}`}>
             <span className="chat_name">{msg.name}</span>
             {msg.message}

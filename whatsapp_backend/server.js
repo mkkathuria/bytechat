@@ -2,8 +2,9 @@
 //  qOtxfGR96akkHqrF my db password
 import express from "express";
 import mongoose from "mongoose";
-import Messages from "./dbMessages.js";
+import Room from "./dbMessages.js";
 import Pusher from "pusher";
+import expressAsyncHandler from "express-async-handler";
 
 // app config
 const app = express();
@@ -19,12 +20,14 @@ const pusher = new Pusher({
 
 // middlewares
 app.use(express.json());
-
-app.use((req,res,next) => {
+app.use((err, req, res, next) => {
+  res.status(500).send({ message: err.message });
+});
+app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Headers", "*");
   next();
-})
+});
 // iski jagah app.use(core()) bhi kr skte hai cors ko install krke npm i cors
 
 // DB config
@@ -40,57 +43,114 @@ const db = mongoose.connection;
 
 db.once("open", () => {
   console.log("My Database Connected");
-  const msgCollection = db.collection("room");
+  const msgCollection = db.collection("rooms");
   const changeStream = msgCollection.watch();
 
   changeStream.on("change", (change) => {
     console.log("a change", change);
 
-    if(change.operationType === "insert"){
+    if (change.operationType === "insert") {
       const messageDetails = change.fullDocument;
-      pusher.trigger("messages","inserted",{
-        room : messageDetails.room_name,
+      console.log(messageDetails , "hello");
+      pusher.trigger("messages", "inserted", {
+        room: messageDetails.room_name,
         name: messageDetails.messages.name,
         message: messageDetails.messages.message,
-        timeStamp : messageDetails.messages.timeStamp,
+        timeStamp: messageDetails.messages.timeStamp,
         received: messageDetails.messages.received,
-         
+       
+      });
+    }
+    else if(change.operationType === "update"){
+      console.log(`change.updateDescription.updatedField`);
+      pusher.trigger("messages", "updated", {
+        
+       
       });
     } else {
       console.log("Error triggering Pusher");
     }
   });
-});
+}
+);
 
 // ?????
 
 // api routes
-app.get("/", (req, res) => {
-  res.status(200).send("hello world");
-});
+app.get(
+  "/",
+  expressAsyncHandler((req, res) => {
+    res.status(200).send("hello world");
+  })
+);
 
-app.get("/api/messages/sync", (req, res) => {
-  //find returns all data(means all messages)
-  Messages.find((err, data) => {
-    if (err) {
-      res.status(500).send(err); //internal server error
+
+
+//working
+app.get(
+  "/api/allrooms",
+  expressAsyncHandler(async (req, res) => {
+    const roomss = await Room.find({});
+    //console.log(roomss);
+    if (roomss) {
+      res.send(roomss);
     } else {
-      res.status(200).send(data); //created
+      res.status(404).send({ message: "room not found" });
     }
-  });
-});
+  })
+);
 
-app.post("/api/messages/new", (req, res) => {
-  const mychatmsg = req.body;
+//working
+app.get(
+  "/api/messages/room/:room_id",
+  expressAsyncHandler(async (req, res) => {
+    //find returns all data(means all messages)
+    const room = await Room.findById(req.params.room_id);
 
-  Messages.create(mychatmsg, (err, data) => {
-    if (err) {
-      res.status(500).send(err); //internal server error
+    if (room) {
+      res.send(room.messages);
     } else {
-      res.status(201).send(data); //created
+      res.status(404).send({ message: "room not found" });
     }
-  });
-});
+  })
+);
+
+
+//working
+app.post(
+  "/api/messages/new",
+  expressAsyncHandler(async (req, res) => {
+    const mychatmsg = req.body;
+
+    const room = await Room.findById(mychatmsg.room_id);
+    if(room){
+      room.messages.push({
+        message: mychatmsg.message,
+        name: mychatmsg.name,
+        timestamp: mychatmsg.timeStamp,
+        received: mychatmsg.received});
+        room.save();
+      res.send(room);
+    }else{
+      res.status(404).send({ message: "room not found" })
+    }
+    
+
+    
+  })
+);
+
+// working
+app.post(
+  "/api/newroom",
+  expressAsyncHandler(async (req, res) => {
+    const room = new Room({
+      room_name: req.body.name,
+    });
+    const createdroom = await room.save();
+    res.send(createdroom);
+  })
+);
 
 // listener
 app.listen(port, () => {
