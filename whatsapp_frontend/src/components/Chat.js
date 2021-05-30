@@ -51,7 +51,7 @@ function Chat() {
 
     const channel = pusher.subscribe("messages");
     channel.bind("updated",  async (newMessage) => {
-       alert(JSON.stringify(newMessage));
+      // alert(JSON.stringify(newMessage));
        const msgeeees = await Axios.get(`/api/messages/room/${room_id}`);
        setAllmessages(msgeeees.data);
     });

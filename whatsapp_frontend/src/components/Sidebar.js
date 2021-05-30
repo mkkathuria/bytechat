@@ -24,7 +24,7 @@ function Sidebar() {
  
      const channel = pusher.subscribe("messages");
      channel.bind("inserted",  async (data) => {
-       alert(JSON.stringify(data));
+       //alert(JSON.stringify(data));
        const temprooms = await Axios.get("/api/allrooms");
        setAllrooms(temprooms.data);
        

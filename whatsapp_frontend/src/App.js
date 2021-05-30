@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import Chat from "./components/Chat";
 import Sidebar from "./components/Sidebar";
-import { BrowserRouter, Link, Route } from "react-router-dom";
-import Pusher from "pusher-js";
+import { BrowserRouter,  Route } from "react-router-dom";
 // eslint-disable-next-line
 import axios from "./axios";
+import Login from "./login";
+import {useStateValue} from './StateProvider';
 
 function App() {
+
+  const [{user}, dispatch] = useStateValue();
   // eslint-disable-next-line
  // const [msges, setMsges] = useState([]);
 
@@ -25,11 +28,15 @@ function App() {
   return (
     <BrowserRouter>
       <div className="app borderbb">
+      {!user ? (
+        <Login/>
+      ):
         <div className="app_body border">
           <Sidebar></Sidebar>
           <Route path="/room/:room_id" component={Chat}></Route>
          
         </div>
+      }
       </div>
     </BrowserRouter>
   );
