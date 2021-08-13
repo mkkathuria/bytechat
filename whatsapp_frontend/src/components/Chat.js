@@ -11,8 +11,6 @@ import { useParams } from "react-router";
 import Pusher from "pusher-js";
 
 function Chat() {
-  
-
   const [input, setInput] = useState("");
   const { room_id } = useParams();
   //console.log(room_id,"     room id");
@@ -50,17 +48,17 @@ function Chat() {
     });
 
     const channel = pusher.subscribe("messages");
-    channel.bind("updated",  async (newMessage) => {
+    channel.bind("updated", async (newMessage) => {
       // alert(JSON.stringify(newMessage));
-       const msgeeees = await Axios.get(`/api/messages/room/${room_id}`);
-       setAllmessages(msgeeees.data);
+      const msgeeees = await Axios.get(`/api/messages/room/${room_id}`);
+      setAllmessages(msgeeees.data);
     });
 
     return () => {
       channel.unbind_all();
       channel.unsubscribe();
     };
-  }, [allmessages,room_id]);
+  }, [allmessages, room_id]);
   console.log(allmessages, " this is all msges");
   return (
     <div className="chat border">
